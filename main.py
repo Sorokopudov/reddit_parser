@@ -26,6 +26,8 @@ reddit_password = os.getenv('REDDIT_PASSWORD')
 reddit_user_agent = os.getenv('REDDIT_USER_AGENT')
 reddit_username = os.getenv('REDDIT_USERNAME')
 
+last_posts_check = int(os.getenv('LAST_POSTS_CHECK', '10'))
+last_comments_check = int(os.getenv('LAST_COMMENTS_CHECK', '10')
 max_retries = int(os.getenv('MAX_RETRIES', '3'))
 retry_delay = int(os.getenv('RETRY_DELAY', '10'))
 
@@ -57,9 +59,9 @@ def main():
                     user = reddit.redditor(username)
 
                     update_user_info(connection, user, max_retries, retry_delay )
-                    for post in user.submissions.new(limit=10):
+                    for post in user.submissions.new(limit=last_posts_check):
                         add_posts(connection, post, max_retries, retry_delay)
-                    for comment in user.comments.new(limit=10):
+                    for comment in user.comments.new(limit=last_comments_check):
                         add_comments(connection, comment, max_retries, retry_delay)
 
                 break
