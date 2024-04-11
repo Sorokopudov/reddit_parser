@@ -5,7 +5,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Файлы в контейнер
-COPY main.py utils.py reddit_users.txt /app/
+COPY main.py utils.py /app/
 
 # Зависимости
 RUN pip install psycopg2-binary praw python-dotenv

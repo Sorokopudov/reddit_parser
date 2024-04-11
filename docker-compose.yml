@@ -28,6 +28,8 @@ services:
       RETRY_DELAY: ${RETRY_DELAY}
     depends_on:
       - db
+    volumes:
+      - ./reddit_users.txt:/app/reddit_users.txt
 
 volumes:
   db_data:
