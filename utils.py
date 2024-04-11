@@ -18,7 +18,7 @@ def update_user_info(connection, user, max_retries, retry_delay):
                 cursor.execute(query, (str(user.id), user.name, user.link_karma, user.comment_karma, datetime.now()))
                 connection.commit()
             logging.info(f"Updated user info for {user.name}")
-            break  # Успешно выполнено, выходим из цикла
+            break
         except Exception as e:
             logging.error(f"Attempt {attempt + 1}: Error updating user info for {user.name}: {e}")
             attempt += 1
@@ -40,8 +40,11 @@ def add_posts(connection, post, max_retries, retry_delay):
                 """
                 cursor.execute(query, (post.id, post.title, post.selftext, post.subreddit_id, post.author.id, datetime.now()))
                 connection.commit()
-            logging.info(f"Added post {post.id} for user {post.author}")
-            break  # Успешно выполнено, выходим из цикла
+                if cursor.rowcount > 0:  # Проверка, была ли добавлена строка
+                    logging.info(f"Added new post {post.id} for user {post.author}")
+                # else:
+                #     logging.info(f"Post {post.id} already exists, not added.")
+                break
         except Exception as e:
             logging.error(f"Attempt {attempt + 1}: Error adding post {post.id} for user {post.author}: {e}")
             attempt += 1
@@ -50,6 +53,7 @@ def add_posts(connection, post, max_retries, retry_delay):
                 time.sleep(retry_delay)
             else:
                 logging.error(f"Failed to add post {post.id} for user {post.author} after {max_retries} attempts.")
+
 
 def add_comments(connection, comment, max_retries, retry_delay):
     attempt = 0
@@ -63,8 +67,11 @@ def add_comments(connection, comment, max_retries, retry_delay):
                 """
                 cursor.execute(query, (comment.id, comment.body, comment.parent_id, comment.subreddit_id, comment.author.id, datetime.now()))
                 connection.commit()
-            logging.info(f"Added comment {comment.id} for user {comment.author}")
-            break  # Успех, выходим из цикла
+                if cursor.rowcount > 0:  # Проверка, была ли добавлена строка
+                    logging.info(f"Added new comment {comment.id} for user {comment.author}")
+                # else:
+                    # logging.info(f"Comment {comment.id} already exists, not added.")
+                break
         except Exception as e:
             logging.error(f"Attempt {attempt + 1}: Error adding comment {comment.id} for user {comment.author}: {e}")
             attempt += 1
@@ -73,4 +80,3 @@ def add_comments(connection, comment, max_retries, retry_delay):
                 time.sleep(retry_delay)
             else:
                 logging.error(f"Failed to add comment {comment.id} for user {comment.author} after {max_retries} attempts.")
-                break  # Выходим из цикла после исчерпания всех попыток
