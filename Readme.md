@@ -22,18 +22,6 @@
 
 Перед запуском убедитесь, что у вас установлен Docker и Docker Compose. Клонируйте репозиторий и создайте файл `.env` с вашими конфигурациями.
 
-### Запуск
-
-Чтобы запустить все сервисы, выполните:
-
-```bash
-./run.sh
-
-Для повторного запуска только парсера используйте:
-
-```bash
-./run-parser.sh
-
 ### Конфигурация
 
 Для настройки проекта измените файл .env, указав требуемые переменные окружения:
@@ -50,22 +38,46 @@
     - MAX_RETRIES: максимальное количество попыток для переподключения или запросов.
     - RETRY_DELAY: время задержки между попытками в секундах.
 
-## Пример файла .env :
+#### Пример файла '.env' :
 
+```
 # Database credentials
-DB_NAME=reddit_user_activity_docker
-DB_USER=postgres
-DB_PASSWORD=aaaaa123456
-DB_PORT=5432
-
+DB_NAME=reddit_user_activity_docker  
+DB_USER=postgres  
+DB_PASSWORD=aaaaa123456  
+DB_PORT=5432  
 
 # Reddit API credentials
-REDDIT_CLIENT_ID=W..........A
-REDDIT_CLIENT_SECRET=W................A
-REDDIT_PASSWORD=R...........8
-REDDIT_USER_AGENT=testscript by u/User_82
-REDDIT_USERNAME=User_82
+REDDIT_CLIENT_ID=W..........A  
+REDDIT_CLIENT_SECRET=W................A  
+REDDIT_PASSWORD=R...........8  
+REDDIT_USER_AGENT=testscript by u/User_82  
+REDDIT_USERNAME=User_82  
 
 MAX_RETRIES=5  
 RETRY_DELAY=10 
+```
+
+#### Пример файла 'reddit_users.txt':
+```
+user1  
+user2  
+user3
+```
+
+### Запуск
+
+Чтобы запустить все сервисы, выполните:
+
+```bash
+./run.sh
+```
+
+Для повторного запуска только парсера используйте:
+
+```bash
+./run-parser.sh
+```
+
+
 
