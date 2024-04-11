@@ -48,12 +48,10 @@ with open(file_path, 'r') as file:
 def main():
     for attempt in range(max_retries):
         try:
-            # Попытка подключения к базе данных
             with psycopg2.connect(database=db_name, user=db_user, password=db_password, host=db_host,
                                   port=db_port) as connection:
                 logging.info("Connection to PostgreSQL DB successful")
 
-                # Перебор пользователей и обработка данных
                 for index, username in enumerate(reddit_users, start=1):
                     logging.info(f"Processing user {index}/{len(reddit_users)}: {username}")
                     user = reddit.redditor(username)
@@ -64,7 +62,6 @@ def main():
                     for comment in user.comments.new(limit=10):
                         add_comments(connection, comment, max_retries, retry_delay)
 
-                # Завершение функции после успешного выполнения
                 break
 
         except psycopg2.OperationalError as e:
@@ -77,7 +74,6 @@ def main():
     else:
         logging.error(f"All {max_retries} retries failed.")
 
-    # Эта строка будет выполнена после всех попыток или при успешном выполнении
     logging.info("Finished processing all users.")
 
 
